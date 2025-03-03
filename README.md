@@ -29,15 +29,17 @@ Our accuracy dropped from 92.76% to 29.73%. This drop is expected due to balanci
 Our precision from our baseline model to our resampled balanced model went from 0.67 to 0.09, meaning we have more false positives now. Our recall jumped from 0 to 0.99 and our F1-score also increased from 0 to 0.17.
 
 We have 90,673 true negatives, meaning these are the cases our model correctly predicted "NOT FAILED TO YIELD". We have 281,479 false positives, meaning our model incorrectly predicted "FAILED TO YIELD" when it was actually "NOT FAILED TO YIELD". We have 398 false negatives, meaning our model incorrectly predicted "NOT FAILED TO YIELD" when it was actually "FAILED TO YIELD". And we have 28,626 true positives, meaning these are all the cases that were correctly predicted as "FAILED TO YIELD".
+
+Our decision tree model performed very similarly to our resampled model. The decision tree model's accuracy is 29.23% and the undersampled model's is 29.73%. The precision, recall and f1-score all remained the same as our undersampled model. Our false positive count from our undersampled model to our decision tree model jumped from 281,479 to 283,606. This model did not improve significantly from our logistic regression.
 ## Conclusion
 The Vehicle Safety Board of Chicago is likely focused on identifying as many "FAILED TO YIELD" caes as possible (high recall) and minimizing incorrect classifications of "FAILED TO YIELD" (high precision), therefore having a nice balance between the two metrics. This would mean our F1-score is the strongest metric our board cares about.
 
-For this reason, our resampled model is the better choice for the Vehicle Safety Board of Chicago. Our Board needs a balance between recall and precision, so going from an F1-score of 0 (from our baseline) to 0.17 is a significant increase. Also, our baseline model is useless for a safety analysis as the recall score was 0. This means that it completely ignores the "FAILED TO YIELD" cases. The board cannot make policy recommendations if the model fails to detect real cases.
+After testing multiple models, our resampled logistic regression model remains the best choice for the Vehicle Safety Board of Chicago. This model increased F1-score from 0 (baseline) to 0.17, showing a significant improvement in balancing recall and precision. Our baseline model was useless for safety analysis, as its recall was 0, meaning it completely ignored all "FAILED TO YIELD" cases. The board cannot make policy recommendations if the model fails to detect real incidents.
+
+We also tested a Decision Tree Classifier to see if it could provide a better balance. While the Decision Tree maintained a high recall (0.99), it did not improve precision or F1-score, producing results nearly identical to the undersampling logistic regression model. Additionally, the Decision Tree had slightly more false positives, which further confirms logistic regression with undersampling remains the best option.
+
+Moving forward, improving precision without sacrificing recall should be the focus of further iterations.
 ## Next Steps
-The Vehicle Safety Board of Chicago should take these next steps as a result of utilizing our iterated resampled model.
+The Vehicle Safety Board of Chicago should incorporate GIS (Geographic Information System) data to examind the spatial distribution of the accidents. By analyzing latitude and longitude coordinates we can identify high-risk locations where "FAILED TO YIELD" accidents frequently occur. Using spatial clustering or heat map analyses we can rank locations based on accident frequency. After finding out these high traffic areas, we could assess traffic flow patterns, road design issues and driver behavior.
 
-1) Launch targeted public awareness campaigns. The model identified a high number of "FAILED TO YIELD" accidents so it would be important to educate drivers on right-of-way laws at intersections, crossings, and yield signs.
-
-2) Implement more effective traffic control. It would be good to know where "FAILED TO YIELD" accidents happened most frequently. If we understood this, we could improve intersection designs and improve upon traffic signaling.
-
-3) Increase penalties for failure to yield. Our model obviously exposes negative trends when drivers failed to yield so maybe weak enforcement may be causing this. We could think to increase policing in high failure to yield accident centers and increase penalties for failure to yield violations.
+From these results we could make evidence-based solutions to decreasing frequency of these accidents. By integrating GIS data into our machine learning model, we can strengthen policy recommendations and develop targeted interventions.
